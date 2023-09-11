@@ -12,12 +12,16 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
+import Badge from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import './navbar.css';
 import { Icon } from '@mui/material';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 const NavBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -38,6 +42,14 @@ const NavBar = () => {
         setAnchorElUser(null);
     };
 
+    const StyledBadge = styled(Badge)(({ theme }) => ({
+        '& .MuiBadge-badge': {
+            right: -3,
+            top: 13,
+            border: `2px solid ${theme.palette.background.paper}`,
+            padding: '0 4px',
+        },
+    }));
     return (
         <>
             <AppBar position="static" >
@@ -98,6 +110,11 @@ const NavBar = () => {
                                 )) }
                             </Menu>
                         </Box>
+                        <IconButton aria-label="cart">
+                            <StyledBadge badgeContent={ 4 } color="secondary">
+                                <ShoppingCartIcon />
+                            </StyledBadge>
+                        </IconButton>
                         <Avatar alt="Remy Sharp" src="/Icon/mugiwara.png" />
                         <Typography
                             variant="h5"
@@ -117,6 +134,8 @@ const NavBar = () => {
                         >
                             FairyTail
                         </Typography>
+
+                        
                         <Box sx={ { flexGrow: 1, display: { xs: 'none', md: 'flex' } } }>
                             { pages.map((page) => (
                                 <Button
@@ -128,7 +147,11 @@ const NavBar = () => {
                                 </Button>
                             )) }
                         </Box>
-
+                        <IconButton aria-label="cart">
+                            <StyledBadge badgeContent={ 4 } color="secondary">
+                                <ShoppingCartIcon />
+                            </StyledBadge>
+                        </IconButton>
                         <Box sx={ { flexGrow: 0 } }>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={ handleOpenUserMenu } sx={ { p: 0 } }>

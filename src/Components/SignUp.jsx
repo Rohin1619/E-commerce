@@ -33,7 +33,7 @@ const SignUp = () => {
 
     const handleChange = (event) => {
         const { name, value } = event;
-        setFormData(prev => ({ ...prev, [name]: value }))
+        setFormData(prev => ({ ...prev, [username]: value }))
     }
 
     const handleEmailChange = (event) => {

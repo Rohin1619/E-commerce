@@ -8,10 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-const TableLists = ({ username, email }) => {
-
-console.log(email)
-
+const TableLists = ({ formData }) => {
     const [columns, setColumns] = useState([
         { id: 'code', label: 'Code', minWidth: 100 },
         { id: 'username', label: 'Username', minWidth: 170 },
@@ -22,9 +19,9 @@ console.log(email)
             align: 'center',
             format: (value) => value.toLocaleString('en-US'),
         },
-    ])
-   
-    useEffect(()=>{
+    ]);
+
+    useEffect(() => {
         setColumns([
             { id: 'code', label: 'Code', minWidth: 100 },
             { id: 'username', label: 'Username', minWidth: 170 },
@@ -35,8 +32,8 @@ console.log(email)
                 align: 'center',
                 format: (value) => value.toLocaleString('en-US'),
             },
-        ])
-    },[])
+        ]);
+    }, []);
 
     const createData = (username, email) => {
         const code = Math.floor(Math.random() * 10000);
@@ -45,10 +42,16 @@ console.log(email)
 
     const [rows, setRows] = useState([]);
 
+
     const addUserToTable = () => {
-        const newRow = createData(username, email);
-        setRows([...rows, newRow]);
+        if (formData && formData.username && formData.email) {
+            const newRow = createData(formData.username, formData.email);
+            setRows([...rows, newRow]);
+        } else {
+            console.error("formData is missing or incomplete.");
+        }
     };
+
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -61,8 +64,6 @@ console.log(email)
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
-    console.log({rows})
 
     return (
         <>
@@ -114,7 +115,7 @@ console.log(email)
                     onRowsPerPageChange={ handleChangeRowsPerPage }
                 />
             </Paper>
-            <button onClick={ addUserToTable }>Add User</button>
+            <button onClick={ addUserToTable }></button>
         </>
     );
 };
