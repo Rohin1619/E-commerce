@@ -38,7 +38,7 @@ const HomePage = () => {
                     <Card sx={ { maxWidth: 345 } }>
                       <CardMedia
                         component="img"
-                        alt="green iguana"
+                        alt="Enma"
                         height="140"
                         image="/Icon/Luffy.jpeg"
                       />
@@ -64,7 +64,7 @@ const HomePage = () => {
                 <Item>                    <Card sx={ { maxWidth: 345 } }>
                   <CardMedia
                     component="img"
-                    alt="green iguana"
+                    alt="zangetsu"
                     height="140"
                     image="/static/images/cards/contemplative-reptile.jpg"
                   />
@@ -87,7 +87,7 @@ const HomePage = () => {
                 <Item>                    <Card sx={ { maxWidth: 345 } }>
                   <CardMedia
                     component="img"
-                    alt="green iguana"
+                    alt="Excalibur"
                     height="140"
                     image="/static/images/cards/contemplative-reptile.jpg"
                   />
@@ -110,7 +110,7 @@ const HomePage = () => {
                 <Item>                    <Card sx={ { maxWidth: 345 } }>
                   <CardMedia
                     component="img"
-                    alt="green iguana"
+                    alt="samehada"
                     height="140"
                     image="/static/images/cards/contemplative-reptile.jpg"
                   />
@@ -133,7 +133,7 @@ const HomePage = () => {
                 <Item>                    <Card sx={ { maxWidth: 345 } }>
                   <CardMedia
                     component="img"
-                    alt="green iguana"
+                    alt="Mjolnir"
                     height="140"
                     image="/static/images/cards/contemplative-reptile.jpg"
                   />
@@ -156,7 +156,7 @@ const HomePage = () => {
                 <Item>                    <Card sx={ { maxWidth: 345 } }>
                   <CardMedia
                     component="img"
-                    alt="green iguana"
+                    alt="chastiefol"
                     height="140"
                     image="/static/images/cards/contemplative-reptile.jpg"
                   />
