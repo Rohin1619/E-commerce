@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { Box, CssBaseline, Container, Grid, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import Button from '@mui/material/Button';
+import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import NavBar from './NavBar';
 import { fetchProducts } from '../stores/slices/productsSlice';
@@ -72,9 +73,9 @@ const HomePage = () => {
                         { product.description }
                       </Typography>
                     </CardContent>
-                    <Button variant="outlined" onClick={ () => handleClickOpen(product) }>
-                      Info
-                    </Button>
+                    <IconButton variant="outlined" aria-label='info' color='primary' onClick={ () => handleClickOpen(product) }>
+                      <InfoIcon/>
+                    </IconButton>
                     <Button 
                     size="small"
                     onClick={ () => handleAddToCart(product)}

@@ -1,9 +1,9 @@
 
-import Cart from './Components/Cart';
+import * as React from 'react';
 import HomePage from './Components/HomePage';
 
 
-function App() {
+const App = () => {
 
     return (
         <>

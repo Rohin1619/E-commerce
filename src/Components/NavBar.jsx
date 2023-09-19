@@ -11,11 +11,10 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
-import AddIcon from '@mui/icons-material/Adb';
-import Badge from '@mui/material/Badge';
+import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-//import { CreateApi } from '@reduxjs/toolkit/query/react'
+import {Dialog, Slide, Badge, List} from '@mui/material';
 
 import './navbar.css';
 import { Icon } from '@mui/material';
@@ -24,6 +23,9 @@ import Cart from './Cart';
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ ref } { ...props } />;
+});
 
 const NavBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -44,9 +46,6 @@ const NavBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-    const handleCartIconClick = () => {
-        setIsCartOpen(!isCartOpen);
-    };
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
         '& .MuiBadge-badge': {
@@ -56,6 +55,19 @@ const NavBar = () => {
             padding: '0 4px',
         },
     }));
+
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
     return (
         <>
             <AppBar position="static" >
@@ -134,11 +146,36 @@ const NavBar = () => {
                         <IconButton 
                         aria-label="cart" 
                         sx={{mr:2}}
-                            onClick={ handleCartIconClick }>
+                            onClick={ handleClickOpen }>
                             <StyledBadge badgeContent={ 4 } color="secondary">
                                 <ShoppingCartIcon />
                             </StyledBadge>
                         </IconButton>
+                        <Dialog
+                            fullScreen
+                            open={ open }
+                            onClose={ handleClose }
+                            TransitionComponent={ Transition }
+                        >
+                            <AppBar sx={ { position: 'relative' } }>
+                                <Toolbar>
+                                    <IconButton
+                                        edge="start"
+                                        color="inherit"
+                                        onClick={ handleClose }
+                                        aria-label="close"
+                                    >
+                                        <CloseIcon />
+                                    </IconButton>
+                                    <Typography sx={ { ml: 2, flex: 1 } } variant="h6" component="div">
+                                        Products
+                                    </Typography>
+                                </Toolbar>
+                            </AppBar>
+                            <List>
+                                <Cart />
+                            </List>
+                            </Dialog>
                         <Box sx={ { flexGrow: 0 } }>
 
                             <Menu
@@ -172,7 +209,7 @@ const NavBar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            { isCartOpen && <Cart /> }
+            
         </>
     );
 };
