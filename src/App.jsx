@@ -1,17 +1,9 @@
-
-import * as React from 'react';
-import HomePage from './Page/HomePage';
-import Payment from './Page/Payment';
-
+import Routes from './Routes';
 
 const App = () => {
 
     return (
-        <>
-            <HomePage />
-
-
-        </>
+         <Routes/>
     )
 }
 

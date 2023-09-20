@@ -1,5 +1,5 @@
-import React from 'react'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import React from 'react';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const TAX_RATE = 0.07;
 
@@ -20,15 +20,14 @@ function subtotal(items) {
   return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-const rows = [
-  createRow('Paperclips (Box)', 100, 1.15),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-const Payment = () => {
-
+const Payment = ({cartItems}) => {
+  const rows = cartItems?.map((cartItem) =>
+    createRow(cartItem.title, 1, cartItem.price)
+  );
+  const savedCartItems = useSelector((state) => state.cart.savedCart);
+  const invoiceSubtotal = subtotal(rows);
+  const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+  const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
   return (
     <>
@@ -53,7 +52,7 @@ const Payment = () => {
               <TableRow key={ row.desc }>
                 <TableCell>{ row.desc }</TableCell>
                 <TableCell align="right">{ row.qty }</TableCell>
-                <TableCell align="right">{ row.unit }</TableCell>
+                <TableCell align="right">{ ccyFormat(row.unit) }</TableCell>
                 <TableCell align="right">{ ccyFormat(row.price) }</TableCell>
               </TableRow>
             )) }
@@ -75,8 +74,7 @@ const Payment = () => {
         </Table>
       </TableContainer>
     </>
-  )
-}
+  );
+};
 
-export default Payment
-
+export default Payment;

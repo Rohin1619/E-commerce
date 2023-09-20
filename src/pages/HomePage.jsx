@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { Box, CssBaseline, Container, Grid, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Container, Grid, Typography, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import Button from '@mui/material/Button';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
-import NavBar from '../Components/NavBar';
+
 import { fetchProducts } from '../stores/slices/productsSlice';
 import { addItem } from '../stores/slices/cartSlice';
+
+import { styles } from '../components/styles';
 
 const HomePage = () => {
   const Item = styled(Paper)(({ theme }) => ({
@@ -31,16 +34,16 @@ const HomePage = () => {
   }, [dispatch]);
 
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [open, setOpen] = React.useState(false);
+  const [modalControl, setModalControl] = useState(false);
 
   const handleClickOpen = (product) => {
     setSelectedProduct(product);
-    setOpen(true);
+    setModalControl(!modalControl)
   };
 
   const handleClose = () => {
     setSelectedProduct(null);
-    setOpen(false);
+   setModalControl(!modalControl)
   };
 
   const handleAddToCart = (product) => {
@@ -52,23 +55,20 @@ const HomePage = () => {
     }
   };
 
-
   return (
     <>
-      <NavBar />
-      <CssBaseline />
       <Container>
-        <Box sx={ { flexGrow: 1, justifyContent: 'center', justifyItems: 'center', mt: 5 } }>
+        <Box sx={ styles.wrapperBox }>
           <Grid key="product-grid" container spacing={ 3 }>
-            { products.products.map((product, index) => (
+            { products?.products.map((product, index) => (
               <Grid key={ product.id } xs={ 9 } sm={ 6 } md={ 4 }>
                 <Item>
                   <Card sx={ { maxWidth: 345 } }>
                     <CardMedia
                       component="img"
-                      alt={ product.title }
+                      alt={ product?.title }
                       height="140"
-                      image={ product.images[0] }
+                      image={ product?.images[0] }
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
@@ -79,7 +79,7 @@ const HomePage = () => {
                       </Typography>
                     </CardContent>
                     <IconButton variant="outlined" aria-label='info' color='primary' onClick={ () => handleClickOpen(product) }>
-                      <InfoIcon/>
+                      <InfoIcon />
                     </IconButton>
                     <Button
                       size="small"
@@ -95,37 +95,25 @@ const HomePage = () => {
           </Grid>
         </Box>
       </Container>
-      { selectedProduct && (
-        <ProductDialog
-          open={ open }
-          onClose={ handleClose }
-          product={ selectedProduct }
-        />
-      ) }
+      <Dialog onClose={ handleClose } open={ modalControl }>
+        <DialogTitle>{ selectedProduct?.title }</DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={ handleClose }
+          sx={ {
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          } }
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers>
+          <Typography gutterBottom>{ selectedProduct?.description }</Typography>
+        </DialogContent>
+      </Dialog>
     </>
-  );
-};
-
-const ProductDialog = ({ open, onClose, product }) => {
-  return (
-    <Dialog onClose={ onClose } open={ open }>
-      <DialogTitle>{ product.title }</DialogTitle>
-      <IconButton
-        aria-label="close"
-        onClick={ onClose }
-        sx={ {
-          position: 'absolute',
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        } }
-      >
-        <CloseIcon />
-      </IconButton>
-      <DialogContent dividers>
-        <Typography gutterBottom>{ product.description }</Typography>
-      </DialogContent>
-    </Dialog>
   );
 };
 

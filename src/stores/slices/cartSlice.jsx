@@ -24,7 +24,7 @@ const cartSlice = createSlice({
         },
 
         saveCart:(state, action) =>{
-            state.savedCart = [...state.items]
+            state.savedCart = action.payload;
         },
 
     },
