@@ -86,11 +86,15 @@ const Cart = () => {
                     sx={ { bgcolor: "red" } }
                   >
                     <DeleteIcon />
+
                   </Fab>
                 </Box>
               </Box>
             )
           }) }
+          <Box sx={ { display: "flex", justifyContent: "right", mt:5 } }>
+            <Button variant="contained" sx={{borderRadius:12}}>Checkout</Button>
+          </Box>
         </Box>
       </Container>
     </React.Fragment>

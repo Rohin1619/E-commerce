@@ -24,11 +24,12 @@ const HomePage = () => {
 
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
-  const status = useSelector((state) => state.products.status);
+  const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [open, setOpen] = React.useState(false);
 
@@ -43,8 +44,12 @@ const HomePage = () => {
   };
 
   const handleAddToCart = (product) => {
-    dispatch(addItem(product));
-    console.log("Product added", product)
+    const isProductInCart = cartItems.some((cartItem) => cartItem.id === product.id);
+
+    if (!isProductInCart) {
+      dispatch(addItem(product));
+      console.log("Product added", product);
+    }
   };
 
 
@@ -76,10 +81,13 @@ const HomePage = () => {
                     <IconButton variant="outlined" aria-label='info' color='primary' onClick={ () => handleClickOpen(product) }>
                       <InfoIcon/>
                     </IconButton>
-                    <Button 
-                    size="small"
-                    onClick={ () => handleAddToCart(product)}
-                    >Add to Cart</Button>
+                    <Button
+                      size="small"
+                      onClick={ () => handleAddToCart(product) }
+                      disabled={ cartItems.some((cartItem) => cartItem.id === product.id) } // Disable if already in cart
+                    >
+                      { cartItems.some((cartItem) => cartItem.id === product.id) ? "In Cart" : "Add to Cart" }
+                    </Button>
                   </Card>
                 </Item>
               </Grid>
