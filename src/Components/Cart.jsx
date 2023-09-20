@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement } from "../stores/slices/counterSlice";
-import { addItem, removeItem } from "../stores/slices/cartSlice";
+import { removeItem, clearCart } from "../stores/slices/cartSlice";
 import {
   Box,
   CssBaseline,
   Container,
-  Grid,
   Typography,
   Button,
 } from "@mui/material";
@@ -16,28 +14,46 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
 
 const Cart = () => {
-  const count = useSelector((state) => state.counter.value);
+
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  const [productCounts, setProductCounts] = useState({});
+
+  useEffect(() => {
+    const initialCounts = {};
+    cartItems.forEach((cartItem) => {
+      initialCounts[cartItem.id] = 1;
+    });
+    setProductCounts(initialCounts);
+  }, [cartItems]);
 
   const handleRemoveFromCart = (productId) => {
     dispatch(removeItem(productId));
   };
 
-  const handleCartAddSubtract = (type) => {
+  const handleCartAddSubtract = (productId, type) => {
+    const updatedCounts = { ...productCounts };
     if (type === 'ADD') {
-      dispatch(increment())
+      updatedCounts[productId]++;
+    } else if (type === 'SUBTRACT' && updatedCounts[productId] > 0) {
+      updatedCounts[productId]--;
     }
-    else if (type === 'SUBTRACT') {
-      dispatch(decrement())
-    }
-    else return null;
+    setProductCounts(updatedCounts);
+  }
+
+  const handleClearCart = () => {
+    dispatch(clearCart())
+  }
+
+  const handleCheckout = () => {
+    dispatch(saveCart(cartItems));
+    history.push("../payment");
   }
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container sx={ { mt: 5 } }>
+      <Container sx={ { mt: 5, bgcolor: "e8f1fb" } }>
         <Box sx={ { flexGrow: 1 } }>
           <Typography variant="h3" gutterBottom sx={ { justifyContent: "center", justifyItems: "center" } }>
             Your Products
@@ -46,7 +62,7 @@ const Cart = () => {
           <Box sx={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #ccc', padding: '1px 0' } }>
             <Typography variant="h6">Products</Typography>
             <Typography variant="h6">Price</Typography>
-            <Typography variant="h6" sx={{mr:10}}>Quantity</Typography>
+            <Typography variant="h6" sx={ { mr: 10 } }>Quantity</Typography>
           </Box>
 
           { cartItems.map((cartItem) => {
@@ -62,17 +78,17 @@ const Cart = () => {
                     color="primary"
                     size="small"
                     aria-label="Increment value"
-                    onClick={ () => handleCartAddSubtract('ADD') }
+                    onClick={ () => handleCartAddSubtract(cartItem.id, 'ADD') }
                     sx={ { marginRight: 2 } }
                   >
                     <AddIcon />
                   </Fab>
-                  <span>{ count }</span>
+                  <span>{ productCounts[cartItem.id] }</span>
                   <Fab
                     color="primary"
                     size="small"
                     aria-label="Decrement value"
-                    onClick={ () => handleCartAddSubtract('SUBTRACT') }
+                    onClick={ () => handleCartAddSubtract(cartItem.id, 'SUBTRACT') }
                     sx={ { marginLeft: 2, marginRight: 2 } }
                   >
                     <RemoveIcon />
@@ -92,8 +108,15 @@ const Cart = () => {
               </Box>
             )
           }) }
-          <Box sx={ { display: "flex", justifyContent: "right", mt:5 } }>
-            <Button variant="contained" sx={{borderRadius:12}}>Checkout</Button>
+          <Box sx={ { display: "flex", justifyContent: "space-between", mt: 5 } }>
+            <Button
+              variant="contained"
+              onClick={ handleCheckout }
+              sx={ { borderRadius: 12 } }>Checkout</Button>
+            <Button
+              variant="contained"
+              onClick={ handleClearCart }
+              sx={ { borderRadius: 12, bgcolor: "red" } }>Clear Items</Button>
           </Box>
         </Box>
       </Container>

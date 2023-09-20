@@ -1,6 +1,7 @@
 
 import * as React from 'react';
-import HomePage from './Components/HomePage';
+import HomePage from './Page/HomePage';
+import Payment from './Page/Payment';
 
 
 const App = () => {

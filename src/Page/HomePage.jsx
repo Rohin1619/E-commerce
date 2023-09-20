@@ -9,7 +9,7 @@ import { Box, CssBaseline, Container, Grid, Typography, IconButton, Dialog, Dial
 import Button from '@mui/material/Button';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
-import NavBar from './NavBar';
+import NavBar from '../Components/NavBar';
 import { fetchProducts } from '../stores/slices/productsSlice';
 import { addItem } from '../stores/slices/cartSlice';
 

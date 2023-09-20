@@ -1,23 +1,14 @@
 import React, {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import {Box, Toolbar, IconButton, Typography, Menu,Container, Avatar, Button, Tooltip} from '@mui/material';
+import {Menu, MenuItem} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {Dialog, Slide, Badge, List} from '@mui/material';
-
+import { useSelector } from 'react-redux';
 import './navbar.css';
-import { Icon } from '@mui/material';
 import Cart from './Cart';
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -30,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const NavBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const [isCartOpen, setIsCartOpen] = useState(false);
+    const cartItems = useSelector((state) => state.cart.items);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -56,6 +47,13 @@ const NavBar = () => {
         },
     }));
 
+    const calculateTotalItemCount = () => {
+        let totalCount = 0;
+        cartItems.forEach(() => {
+            totalCount++;
+        });
+        return totalCount;
+    };
 
     const [open, setOpen] = React.useState(false);
 
@@ -147,7 +145,7 @@ const NavBar = () => {
                         aria-label="cart" 
                         sx={{mr:2}}
                             onClick={ handleClickOpen }>
-                            <StyledBadge badgeContent={ 4 } color="secondary">
+                            <StyledBadge badgeContent={ calculateTotalItemCount() } color="secondary">
                                 <ShoppingCartIcon />
                             </StyledBadge>
                         </IconButton>
