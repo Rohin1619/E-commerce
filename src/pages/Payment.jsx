@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from "react-router-dom";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const TAX_RATE = 0.07;
@@ -17,14 +19,17 @@ function createRow(desc, qty, unit) {
 }
 
 function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  return items?.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
 }
 
-const Payment = ({cartItems}) => {
-  const rows = cartItems?.map((cartItem) =>
-    createRow(cartItem.title, 1, cartItem.price)
-  );
-  const savedCartItems = useSelector((state) => state.cart.savedCart);
+const Payment = () => {
+
+  const cartItems = useSelector((state) => state.cart.items);
+  const location = useLocation();
+  const productCounts = location.state.productCounts;
+
+  const rows = cartItems.map((cartItem) => createRow(cartItem.title, productCounts[cartItem.id], cartItem.price));
+
   const invoiceSubtotal = subtotal(rows);
   const invoiceTaxes = TAX_RATE * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
@@ -43,12 +48,12 @@ const Payment = ({cartItems}) => {
             <TableRow>
               <TableCell>Products</TableCell>
               <TableCell align="right">Qty.</TableCell>
-              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Unit</TableCell>
               <TableCell align="right">Sum</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            { rows.map((row) => (
+            { rows?.map((row) => (
               <TableRow key={ row.desc }>
                 <TableCell>{ row.desc }</TableCell>
                 <TableCell align="right">{ row.qty }</TableCell>

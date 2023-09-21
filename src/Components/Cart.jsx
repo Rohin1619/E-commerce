@@ -49,7 +49,8 @@ const Cart = () => {
 
   const handleCheckout = () => {
     dispatch(saveCart(cartItems));
-    navigate("payment");
+    navigate("/payment", { state: { productCounts } });
+    console.log("Your bill is ready", cartItems)
   }
 
   return (
@@ -68,7 +69,7 @@ const Cart = () => {
           </Box>
 
           { cartItems.map((cartItem) => {
-            console.log(cartItem)
+
             return (
               <Box key={ cartItem.id } sx={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0' } }>
                 <div>
