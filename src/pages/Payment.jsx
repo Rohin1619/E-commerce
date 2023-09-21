@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from "react-router-dom";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const TAX_RATE = 0.07;
 
@@ -78,6 +78,10 @@ const Payment = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box>
+        <Button>Cancel</Button>
+        <Button>Proceed Payment</Button>
+      </Box>
     </>
   );
 };

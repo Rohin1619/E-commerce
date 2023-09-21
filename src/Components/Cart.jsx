@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeItem, clearCart, saveCart } from "../stores/slices/cartSlice";
+import { removeItem, clearCart } from "../stores/slices/cartSlice";
+import { saveCart } from "../stores/slices/paymentSlice";
 import {
   Box,
   CssBaseline,
