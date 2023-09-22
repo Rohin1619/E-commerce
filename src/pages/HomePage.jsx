@@ -61,8 +61,8 @@ const HomePage = () => {
         <Box sx={ styles.wrapperBox }>
           <Grid key="product-grid" container spacing={ 3 }>
             { products?.products.map((product, index) => (
-              <Grid key={ product.id } xs={ 9 } sm={ 6 } md={ 4 }>
-                <Item>
+              <Grid item key={ product.id } xs={ 9 } sm={ 6 } md={ 4 }>
+
                   <Card sx={ { maxWidth: 345 } }>
                     <CardMedia
                       component="img"
@@ -89,7 +89,7 @@ const HomePage = () => {
                       { cartItems.some((cartItem) => cartItem.id === product.id) ? "In Cart" : "Add to Cart" }
                     </Button>
                   </Card>
-                </Item>
+          
               </Grid>
             )) }
           </Grid>

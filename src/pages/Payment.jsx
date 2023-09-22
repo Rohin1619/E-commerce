@@ -1,6 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 const TAX_RATE = 0.07;
@@ -25,14 +28,25 @@ function subtotal(items) {
 const Payment = () => {
 
   const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
   const location = useLocation();
-  const productCounts = location.state.productCounts;
+  const navigate = useNavigate();
 
+  const productCounts = location.state.productCounts;
   const rows = cartItems.map((cartItem) => createRow(cartItem.title, productCounts[cartItem.id], cartItem.price));
 
   const invoiceSubtotal = subtotal(rows);
   const invoiceTaxes = TAX_RATE * invoiceSubtotal;
   const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+
+  const handleCancel = () => {
+    navigate("/");
+    console.log("returned to home page")
+  };
+
+  const handleProceedToPayment = () => {
+    navigate('/bill/payment')
+  }
 
   return (
     <>
@@ -79,8 +93,12 @@ const Payment = () => {
         </Table>
       </TableContainer>
       <Box>
-        <Button>Cancel</Button>
-        <Button>Proceed Payment</Button>
+        <Button
+          onClick={ handleCancel }
+        >Cancel</Button>
+        <Button 
+          onClick={ handleProceedToPayment }
+        >Proceed Payment</Button>
       </Box>
     </>
   );

@@ -14,6 +14,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
+import NavBar from "./NavBar";
+
 
 const Cart = () => {
 
@@ -50,7 +52,9 @@ const Cart = () => {
 
   const handleCheckout = () => {
     dispatch(saveCart(cartItems));
-    navigate("/payment", { state: { productCounts } });
+
+
+    navigate("/bill", { state: { productCounts } });
     console.log("Your bill is ready", cartItems)
   }
 

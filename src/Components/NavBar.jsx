@@ -1,17 +1,31 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
-import {Box, Toolbar, IconButton, Typography,Container, Avatar, Button, Tooltip} from '@mui/material';
-import {Menu, MenuItem} from '@mui/material';
+import { Box, Toolbar, IconButton, Typography, Container, Avatar, Button, Tooltip, Link } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import {Dialog, Slide, Badge, List} from '@mui/material';
+import { Dialog, Slide, Badge, List } from '@mui/material';
 import { useSelector } from 'react-redux';
 import './navbar.css';
 import Cart from './Cart';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+
+const pages = [
+    {
+        label: 'Products',
+        link: '/',
+    },
+    {
+        label: 'Pricing',
+        link: '/',
+    },
+    {
+        label: 'Blog',
+        link: '/',
+    }
+]
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -70,7 +84,7 @@ const NavBar = () => {
         <>
             <AppBar position="static" >
                 <Container maxWidth="xl">
-                    <Toolbar disableGutters sx={ { xs: 'flex'}}>
+                    <Toolbar disableGutters sx={ { xs: 'flex' } }>
 
                         <Box sx={ { flexGrow: 1, display: { xs: 'flex', md: 'none' } } }>
                             <IconButton
@@ -102,8 +116,8 @@ const NavBar = () => {
                                 } }
                             >
                                 { pages.map((page) => (
-                                    <MenuItem key={ page } onClick={ handleCloseNavMenu }>
-                                        <Typography textAlign="center">{ page }</Typography>
+                                    <MenuItem key={ page.label } onClick={ handleCloseNavMenu }>
+                                        <Typography textAlign="center">{ page.label }</Typography>
                                     </MenuItem>
                                 )) }
                             </Menu>
@@ -132,18 +146,19 @@ const NavBar = () => {
 
                         <Box sx={ { flexGrow: 1, display: { xs: 'none', md: 'flex' } } }>
                             { pages.map((page) => (
-                                <Button
-                                    key={ page }
+                                <Link
+                                    href="/"
+                                    key={ page.label }
                                     onClick={ handleCloseNavMenu }
-                                    sx={ { my: 2, color: 'white', display: 'block' } }
+                                    sx={ { my: 2, color: 'white', display: 'block', m:2 } }
                                 >
-                                    { page }
-                                </Button>
+                                    { page.label }
+                                </Link>
                             )) }
                         </Box>
-                        <IconButton 
-                        aria-label="cart" 
-                        sx={{mr:2}}
+                        <IconButton
+                            aria-label="cart"
+                            sx={ { mr: 2 } }
                             onClick={ handleClickOpen }>
                             <StyledBadge badgeContent={ calculateTotalItemCount() } color="secondary">
                                 <ShoppingCartIcon />
@@ -173,7 +188,7 @@ const NavBar = () => {
                             <List>
                                 <Cart />
                             </List>
-                            </Dialog>
+                        </Dialog>
                         <Box sx={ { flexGrow: 0 } }>
 
                             <Menu
@@ -207,7 +222,7 @@ const NavBar = () => {
                     </Toolbar>
                 </Container>
             </AppBar>
-            
+
         </>
     );
 };

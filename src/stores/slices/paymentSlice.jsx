@@ -11,8 +11,17 @@ const paymentSlice = createSlice({
         saveCart: (state, action) => {
             state.savedCart = action.payload;
         },
+        openDialog: (state) => {
+            state.isOpen = true;
+        },
+        closeDialog: (state) => {
+            state.isOpen = false;
+        },
+        setSelectedOption: (state, action) => {
+            state.selectedOption = action.payload;
+        },
     },
 });
 
-export const { saveCart } = paymentSlice.actions;
+export const { saveCart, openDialog, closeDialog, setSelectedOption } = paymentSlice.actions;
 export default paymentSlice.reducer;
