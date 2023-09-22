@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import CardActions from '@mui/material/CardActions';
 import { Box, Container, Grid, Typography, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import Button from '@mui/material/Button';
 import InfoIcon from '@mui/icons-material/Info';
@@ -43,7 +44,7 @@ const HomePage = () => {
 
   const handleClose = () => {
     setSelectedProduct(null);
-   setModalControl(!modalControl)
+    setModalControl(!modalControl)
   };
 
   const handleAddToCart = (product) => {
@@ -63,38 +64,57 @@ const HomePage = () => {
             { products?.products.map((product, index) => (
               <Grid item key={ product.id } xs={ 9 } sm={ 6 } md={ 4 }>
 
-                  <Card sx={ { maxWidth: 345 } }>
-                    <CardMedia
-                      component="img"
-                      alt={ product?.title }
-                      height="140"
-                      image={ product?.images[0] }
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        { product.title }
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        { product.description }
-                      </Typography>
-                    </CardContent>
+                <Card className="product-card" sx={ {
+                  maxWidth: 345, minHeight: 340, '&:hover': {
+                    backgroundColor: '#e8f1fb',
+                    transition: 'background-color 0.3s',
+                  }
+                } }>
+                  <CardMedia
+                    component="img"
+                    alt={ product?.title }
+                    image={ product?.images[0] }
+                    height={ 160 }
+                    sx={ { objectFit: 'contain' } }
+                  />
+                  <CardContent
+                    sx={ {
+                      objectFit: "contain",
+                      flexGrow: 1,
+                    } }>
+                    <Typography gutterBottom variant="h5" component="div">
+                      { product.title }
+                    </Typography>
+                    <Typography sx={ {
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    } }
+                      className="product-description"
+                      variant="body2"
+                      color="text.secondary"
+                    >
+                      { product.description }
+                    </Typography>
+                  </CardContent>
+                  <CardActions sx={ { justifyContent: 'space-between', marginTop: 'auto', justifyItems: 'inherit' } }>
                     <IconButton variant="outlined" aria-label='info' color='primary' onClick={ () => handleClickOpen(product) }>
                       <InfoIcon />
                     </IconButton>
                     <Button
                       size="small"
                       onClick={ () => handleAddToCart(product) }
-                      disabled={ cartItems.some((cartItem) => cartItem.id === product.id) } // Disable if already in cart
+                      disabled={ cartItems.some((cartItem) => cartItem.id === product.id) }
                     >
                       { cartItems.some((cartItem) => cartItem.id === product.id) ? "In Cart" : "Add to Cart" }
                     </Button>
-                  </Card>
-          
+                  </CardActions>
+                </Card>
               </Grid>
             )) }
           </Grid>
         </Box>
-      </Container>
+      </Container >
       <Dialog onClose={ handleClose } open={ modalControl }>
         <DialogTitle>{ selectedProduct?.title }</DialogTitle>
         <IconButton

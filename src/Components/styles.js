@@ -3,7 +3,7 @@ export const styles = {
         flexGrow: 1,
         justifyContent: 'center',
         justifyItems: 'center',
-        mt: 5,
-    }
+        mt: 5, }, 
+    };
 
-}
+

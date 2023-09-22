@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeItem, clearCart } from "../stores/slices/cartSlice";
-import { saveCart } from "../stores/slices/paymentSlice";
+
 import {
   Box,
   CssBaseline,
@@ -14,8 +13,9 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
-import NavBar from "./NavBar";
 
+import { removeItem, clearCart } from "../stores/slices/cartSlice";
+import { saveCart } from "../stores/slices/paymentSlice";
 
 const Cart = () => {
 
@@ -52,8 +52,6 @@ const Cart = () => {
 
   const handleCheckout = () => {
     dispatch(saveCart(cartItems));
-
-
     navigate("/bill", { state: { productCounts } });
     console.log("Your bill is ready", cartItems)
   }
