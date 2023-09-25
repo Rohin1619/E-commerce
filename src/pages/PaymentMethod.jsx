@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 
-const PaymentMethod = () => {
+const PaymentMethod = ({invoiceTotal}) => {
 
     const digitalpay = [
         {
@@ -40,7 +40,7 @@ const PaymentMethod = () => {
 
     return (
         <>
-            <Typography variant='h3'>Your Subtotal is </Typography>
+            {/* <Typography variant='h3'>Your Subtotal is { invoiceTotal }</Typography> */}
             <Box>
                 <Typography variant='h6'>Choose your payment method!</Typography>
                 { digitalpay.map((pay) => (

@@ -8,6 +8,13 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -17,7 +24,7 @@ import Fab from '@mui/material/Fab';
 import { removeItem, clearCart } from "../stores/slices/cartSlice";
 import { saveCart } from "../stores/slices/paymentSlice";
 
-const Cart = () => {
+const Cart = ({ onCloseDialog }) => {
 
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
@@ -40,7 +47,7 @@ const Cart = () => {
     const updatedCounts = { ...productCounts };
     if (type === 'ADD') {
       updatedCounts[productId]++;
-    } else if (type === 'SUBTRACT' && updatedCounts[productId] > 0) {
+    } else if (type === 'SUBTRACT' && updatedCounts[productId] > 1) {
       updatedCounts[productId]--;
     }
     setProductCounts(updatedCounts);
@@ -52,8 +59,8 @@ const Cart = () => {
 
   const handleCheckout = () => {
     dispatch(saveCart(cartItems));
+    onCloseDialog();
     navigate("/bill", { state: { productCounts } });
-    console.log("Your bill is ready", cartItems)
   }
 
   return (
@@ -65,55 +72,58 @@ const Cart = () => {
             Your Products
           </Typography>
 
-          <Box sx={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #ccc', padding: '1px 0' } }>
-            <Typography variant="h6">Products</Typography>
-            <Typography variant="h6">Price</Typography>
-            <Typography variant="h6" sx={ { mr: 10 } }>Quantity</Typography>
-          </Box>
-
-          { cartItems.map((cartItem) => {
-
-            return (
-              <Box key={ cartItem.id } sx={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0' } }>
-                <div>
-                  <Typography>{ cartItem.title }</Typography>
-                </div>
-                <Typography>{ cartItem.price }</Typography>
-                <Box sx={ { display: 'flex', alignItems: 'center' } }>
-                  <Fab
-                    color="primary"
-                    size="small"
-                    aria-label="Increment value"
-                    onClick={ () => handleCartAddSubtract(cartItem.id, 'ADD') }
-                    sx={ { marginRight: 2 } }
-                  >
-                    <AddIcon />
-                  </Fab>
-                  <span>{ productCounts[cartItem.id] }</span>
-                  <Fab
-                    color="primary"
-                    size="small"
-                    aria-label="Decrement value"
-                    onClick={ () => handleCartAddSubtract(cartItem.id, 'SUBTRACT') }
-                    sx={ { marginLeft: 2, marginRight: 2 } }
-                  >
-                    <RemoveIcon />
-                  </Fab>
-
-                  <Fab
-                    color="primary"
-                    size="small"
-                    aria-label="Decrement value"
-                    onClick={ () => handleRemoveFromCart(cartItem.id) }
-                    sx={ { bgcolor: "red" } }
-                  >
-                    <DeleteIcon />
-
-                  </Fab>
-                </Box>
-              </Box>
-            )
-          }) }
+          <TableContainer component={ Paper }>
+            <Table sx={ { minWidth: 650 } } aria-label="cart table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Products</TableCell>
+                  <TableCell align="right">Price</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                { cartItems.map((cartItem) => (
+                  <TableRow key={ cartItem.id }>
+                    <TableCell>{ cartItem.title }</TableCell>
+                    <TableCell align="right">{ cartItem.price }</TableCell>
+                    <TableCell align="right">{ productCounts[cartItem.id] }</TableCell>
+                    <TableCell align="right">
+                      <Fab
+                        color="primary"
+                        size="small"
+                        aria-label="Increment value"
+                        onClick={ () => handleCartAddSubtract(cartItem.id, "ADD") }
+                        sx={ { marginRight: 2 } }
+                      >
+                        <AddIcon />
+                      </Fab>
+                      <Fab
+                        color="primary"
+                        size="small"
+                        aria-label="Decrement value"
+                        onClick={ () =>
+                          handleCartAddSubtract(cartItem.id, "SUBTRACT")
+                        }
+                        sx={ { marginLeft: 2, marginRight: 2 } }
+                      >
+                        <RemoveIcon />
+                      </Fab>
+                      <Fab
+                        color="primary"
+                        size="small"
+                        aria-label="Remove from cart"
+                        onClick={ () => handleRemoveFromCart(cartItem.id) }
+                        sx={ { bgcolor: "red" } }
+                      >
+                        <DeleteIcon />
+                      </Fab>
+                    </TableCell>
+                  </TableRow>
+                )) }
+              </TableBody>
+            </Table>
+          </TableContainer>
           <Box sx={ { display: "flex", justifyContent: "space-between", mt: 5 } }>
             <Button
               variant="contained"

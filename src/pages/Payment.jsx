@@ -41,7 +41,6 @@ const Payment = () => {
 
   const handleCancel = () => {
     navigate("/");
-    console.log("returned to home page")
   };
 
   const handleProceedToPayment = () => {

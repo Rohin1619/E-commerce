@@ -186,7 +186,7 @@ const NavBar = () => {
                                 </Toolbar>
                             </AppBar>
                             <List>
-                                <Cart />
+                                <Cart onCloseDialog={ handleClose } />
                             </List>
                         </Dialog>
                         <Box sx={ { flexGrow: 0 } }>

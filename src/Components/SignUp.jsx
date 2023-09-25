@@ -1,4 +1,4 @@
-import { Css } from '@mui/icons-material';
+
 import { Box, CssBaseline, Container, FormControl, InputLabel, Input, TextField } from '@mui/material';
 
 import React, { useState } from 'react'
@@ -8,7 +8,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Typography, InputAdornment, Button, Link } from '@mui/material';
 import { ValidatorComponent, ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
-import TableLists from './TableLists';
+import UserTable from './UserTable';
 
 const initialFormData = {
     username: '',
@@ -26,19 +26,17 @@ const SignUp = () => {
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const [username, setUsername] = useState('');
     const [formData, setFormData] = useState(initialFormData);
+    const [users, setUsers] = useState([]);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
 
     const handleChange = (event) => {
-        const { name, value } = event;
-        setFormData(prev => ({ ...prev, [username]: value }))
+        setUsername(event.target.value);
     }
 
     const handleEmailChange = (event) => {
-
-        console.log("this si email", event.target)
         setEmail(event.target.value);
     };
 
@@ -47,7 +45,6 @@ const SignUp = () => {
     };
 
     const handleConfirmPasswordChange = (event) => {
-        console.log("this si ppppp", event.target)
         setConfirmPassword(event.target.value);
     };
 
@@ -58,10 +55,15 @@ const SignUp = () => {
         return false;
     });
 
+
+
     const handleSubmit = () => {
         if (password !== confirmPassword) {
             alert('Passwords do not match');
         } else {
+            const newUser = { username, email, password };
+            setUsers([...users, newUser]);
+
             alert('Signup successful');
         }
     };
@@ -79,10 +81,16 @@ const SignUp = () => {
 
                     <Box sx={ { bgcolor: '#cfe8fc', height: '50vh', padding: '20px', borderRadius: '10px', width: '350px' } }>
                         <ValidatorForm onSubmit={ handleSubmit } onError={ () => { } }>
-                            <FormControl sx={ { m: 1, width: '100%' } } variant="standard">
-                                <InputLabel>Username</InputLabel>
-                                <Input id="standard-start-adornment" />
-                            </FormControl>
+                            <TextValidator
+                                sx={ { m: 1, width: '100%' } }
+                                variant="standard"
+                                label="Username"
+                                onChange={handleChange}
+                                name="username"
+                                value={ username }
+                                validators={ ['required'] }
+                                errorMessages={ ['This field is required'] }
+                            />
                             <TextValidator
                                 sx={ { m: 1, width: '100%' } }
                                 variant="standard"
@@ -151,7 +159,6 @@ const SignUp = () => {
                                         width: '200px',
                                     } }
                                     type='submit'
-                                    onClick={ handleSubmit }
                                 >
                                     Sign up
                                 </Button>
@@ -175,7 +182,7 @@ const SignUp = () => {
                     </Box>
                 </Container>
             </React.Fragment>
-            <TableLists tableData={ formData } />
+            <UserTable users={ users } />
         </>
     )
 }

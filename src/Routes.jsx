@@ -6,6 +6,7 @@ import NavBar from './components/NavBar';
 import {CssBaseline} from '@mui/material';
 import Payment from './pages/Payment';
 import PaymentMethod from './pages/PaymentMethod';
+import SignUp from './components/SignUp';
 
 const Routes = () => {
     return (
@@ -19,6 +20,8 @@ const Routes = () => {
                 element={<Payment />}/>
                 <Route path='/bill/payment'
                 element = {<PaymentMethod />}/>
+                <Route path='/signup'
+                element = {<SignUp />}/>
             </Switch>
         </>
     )
