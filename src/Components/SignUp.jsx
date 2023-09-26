@@ -1,11 +1,13 @@
 
-import { Box, CssBaseline, Container, FormControl, InputLabel, Input, TextField } from '@mui/material';
+import { Box, CssBaseline, Container} from '@mui/material';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Typography, InputAdornment, Button, Link } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import { ValidatorComponent, ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +19,9 @@ const initialFormData = {
     password: '',
     confirmPassword: ''
 }
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={ 6 } ref={ ref } variant="filled" { ...props } />;
+});
 
 const SignUp = () => {
 
@@ -26,9 +31,9 @@ const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const [username, setUsername] = useState('');
-    const [formData, setFormData] = useState(initialFormData);
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -56,19 +61,45 @@ const SignUp = () => {
         }
         return false;
     });
+    const handleClick = () => {
+        setOpen(true);
+    };
 
-const handleclickLogin = () =>{
-    navigate("/login")
-}
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    const handleclickLogin = () => {
+        navigate("/login")
+    }
+
+    useEffect(() => {
+        const storedUsers = localStorage.getItem('users');
+        if (storedUsers) {
+            setUsers(JSON.parse(storedUsers));
+        }
+    }, []);
+
+    const saveUserToLocalStorage = (user) => {
+        const updatedUsers = [...users, user];
+        localStorage.setItem('users', JSON.stringify(updatedUsers));
+        setUsers(updatedUsers);
+    };
 
     const handleSubmit = () => {
         if (password !== confirmPassword) {
             alert('Passwords do not match');
         } else {
             const newUser = { username, email, password };
-            setUsers([...users, newUser]);
-
-            alert('Signup successful');
+            saveUserToLocalStorage(newUser);
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
         }
     };
     return (
@@ -89,7 +120,7 @@ const handleclickLogin = () =>{
                                 sx={ { m: 1, width: '100%' } }
                                 variant="standard"
                                 label="Username"
-                                onChange={handleChange}
+                                onChange={ handleChange }
                                 name="username"
                                 value={ username }
                                 validators={ ['required'] }
@@ -163,9 +194,15 @@ const handleclickLogin = () =>{
                                         width: '200px',
                                     } }
                                     type='submit'
+                                    onClick={handleClick}
                                 >
                                     Sign up
                                 </Button>
+                                <Snackbar open={ open } autoHideDuration={ 6000 } onClose={ handleClose }>
+                                    <Alert onClose={ handleClose } severity="success" sx={ { width: '100%' } }>
+                                        SignUp Successful!
+                                    </Alert>
+                                </Snackbar>
                             </Box>
                             <br />
                             <Box sx={ { display: 'flex', justifyContent: 'center' } }>
