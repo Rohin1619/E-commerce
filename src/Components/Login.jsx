@@ -12,16 +12,20 @@ import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton';
 import { Typography } from '@mui/material';
 import Link from '@mui/material/Link';
-import Footer from './Footer';
+import SignUp from './SignUp';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [showPassword, setShowPassword] = React.useState(false);
-
+    const navigate = useNavigate();
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    const handleclickSignUp = () => {
+        navigate("/signup")
+    }
     const label = { inputProps: { 'aria-label': 'Forgot Password' } };
     return (
         <>
@@ -63,7 +67,7 @@ const Login = () => {
                             </FormControl>
                     
                         <br/>
-                        <div style={ { display: 'flex', justifyContent: 'center' } }>
+                        <div style={ { display: 'flex', justifyContent: 'center', marginTop:8 } }>
                             <Button
                                 variant="contained"
                                 sx={ {
@@ -85,6 +89,7 @@ const Login = () => {
                                     backgroundcolor: '#4CAF50',
                                     width: '200px',
                                 } }
+                                onClick={ handleclickSignUp }
                             >
                                 Sign up
                             </Button>
@@ -97,7 +102,6 @@ const Login = () => {
                     </Box>
                 </Container>
             </React.Fragment >
-            <Footer />
         </>
     )
 }

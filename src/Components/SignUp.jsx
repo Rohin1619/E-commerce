@@ -7,6 +7,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Typography, InputAdornment, Button, Link } from '@mui/material';
 import { ValidatorComponent, ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { useNavigate } from "react-router-dom";
 
 import UserTable from './UserTable';
 
@@ -27,6 +28,7 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [formData, setFormData] = useState(initialFormData);
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -55,7 +57,9 @@ const SignUp = () => {
         return false;
     });
 
-
+const handleclickLogin = () =>{
+    navigate("/login")
+}
 
     const handleSubmit = () => {
         if (password !== confirmPassword) {
@@ -170,9 +174,7 @@ const SignUp = () => {
                                     <Link
                                         component="button"
                                         variant="body2"
-                                        onClick={ () => {
-                                            console.info("I'm a button.");
-                                        } }
+                                        onClick={handleclickLogin}
                                     >
                                         Login
                                     </Link>

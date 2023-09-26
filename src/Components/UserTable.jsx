@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,7 +11,6 @@ import TableRow from '@mui/material/TableRow';
 import { nanoid } from 'nanoid';
 
 const UserTable = ({ users }) => {
-    console.log({ users })
     const columns = [
         { id: 'id', label: 'ID', minWidth: 100 },
         { id: 'username', label: 'Username', minWidth: 170 },
@@ -19,10 +18,10 @@ const UserTable = ({ users }) => {
         { id: 'password', label: 'Password', minWidth: 170 },
     ];
 
-    const [rows, setRows] = React.useState(users);
+    const [rows, setRows] = useState(users);
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -33,7 +32,7 @@ const UserTable = ({ users }) => {
         setPage(0);
     };
 
-    console.log({ rows })
+  
 
     useEffect(() => {
         const usersWithIds = users.map((user) => ({
@@ -64,7 +63,6 @@ const UserTable = ({ users }) => {
                         { rows
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row, index) => {
-                                console.log("{rows,row}")
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={ -1 } key={ index }>
                                         { columns.map((column) => {

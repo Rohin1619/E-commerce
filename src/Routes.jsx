@@ -7,6 +7,7 @@ import {CssBaseline} from '@mui/material';
 import Payment from './pages/Payment';
 import PaymentMethod from './pages/PaymentMethod';
 import SignUp from './components/SignUp';
+import Login from './components/Login';
 
 const Routes = () => {
     return (
@@ -22,6 +23,8 @@ const Routes = () => {
                 element = {<PaymentMethod />}/>
                 <Route path='/signup'
                 element = {<SignUp />}/>
+                <Route path='/login'
+                    element={ <Login /> } />
             </Switch>
         </>
     )
