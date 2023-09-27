@@ -1,7 +1,6 @@
-
-import { Box, CssBaseline, Container} from '@mui/material';
-
 import React, { useState, useEffect } from 'react'
+
+import { Box, CssBaseline, Container } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -34,6 +33,7 @@ const SignUp = () => {
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
@@ -94,6 +94,7 @@ const SignUp = () => {
         if (password !== confirmPassword) {
             alert('Passwords do not match');
         } else {
+            setSnackbarOpen(true);
             const newUser = { username, email, password };
             saveUserToLocalStorage(newUser);
             setUsername('');
@@ -102,6 +103,14 @@ const SignUp = () => {
             setConfirmPassword('');
         }
     };
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
+
     return (
         <>
             <React.Fragment>
@@ -198,10 +207,19 @@ const SignUp = () => {
                                 >
                                     Sign up
                                 </Button>
-                                <Snackbar open={ open } autoHideDuration={ 6000 } onClose={ handleClose }>
-                                    <Alert onClose={ handleClose } severity="success" sx={ { width: '100%' } }>
+                                <Snackbar
+                                    open={ snackbarOpen }
+                                    autoHideDuration={ 6000 }
+                                    onClose={ handleCloseSnackbar }
+                                    anchorOrigin={ { vertical: 'top', horizontal: 'center' } }
+                                >
+                                    <MuiAlert
+                                        onClose={ handleCloseSnackbar }
+                                        severity="success"
+                                        sx={ { width: '100%' } }
+                                    >
                                         SignUp Successful!
-                                    </Alert>
+                                    </MuiAlert>
                                 </Snackbar>
                             </Box>
                             <br />

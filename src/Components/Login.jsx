@@ -31,6 +31,7 @@ const Login = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
     const handleLogin = () => {
         const storedUsers = JSON.parse(localStorage.getItem('users'));
         const user = storedUsers.find(
@@ -46,6 +47,7 @@ const Login = () => {
     const handleclickSignUp = () => {
         navigate("/signup")
     }
+
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
