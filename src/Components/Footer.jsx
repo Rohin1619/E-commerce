@@ -1,21 +1,38 @@
-import React from 'react'
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import React from "react";
+import { Box, Typography, Link, Container } from "@mui/material";
 
 const Footer = () => {
   return (
-    <>
-      <React.Fragment>
-        <CssBaseline />
-        <Container maxWidth="sm">
-          <Box sx={ { bgcolor: '#csrfsa', height: '20vh' } }>
-            <h1>This is content</h1>
-          </Box>
+    <footer>
+      <Box
+        sx={ {
+          backgroundColor: "#333",
+          color: "#fff",
+          py: 2,
+        } }
+      >
+        <Container>
+          <Typography variant="body2" align="center">
+            &copy; { new Date().getFullYear() } FairyTail
+          </Typography>
+          <Typography variant="body2" align="center">
+            All rights reserved.
+          </Typography>
+          <Typography variant="body2" align="center">
+            <Link href="/privacy-policy">Privacy Policy</Link> |{ " " }
+            <Link href="/terms-of-service">Terms of Service</Link>
+          </Typography>
+          <Typography variant="body2" align="center" sx={ { mt: 1 } }>
+            Contact us at:{ " " }
+            <Link href="mailto:contact@example.com">shopfairytail@gmail.com</Link>
+          </Typography>
+          <Typography variant="body2" align="center">
+            Phone: +123-456-789
+          </Typography>
         </Container>
-      </React.Fragment>
-    </>
-  )
-}
+      </Box>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;

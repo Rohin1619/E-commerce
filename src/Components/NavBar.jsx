@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import { Box, Toolbar, IconButton, Typography, Container, Avatar, Button, Tooltip, Link } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
@@ -6,10 +6,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Dialog, Slide, Badge, List } from '@mui/material';
 import { useSelector } from 'react-redux';
 import './navbar.css';
-import Cart from './Cart';
+import Cart from '../pages/Cart';
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 const pages = [
@@ -26,16 +29,17 @@ const pages = [
         link: '/',
     }
 ]
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Dashboard'];
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ ref } { ...props } />;
 });
 
 const NavBar = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
     const cartItems = useSelector((state) => state.cart.items);
+    const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -69,7 +73,7 @@ const NavBar = () => {
         return totalCount;
     };
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -79,7 +83,15 @@ const NavBar = () => {
         setOpen(false);
     };
 
+    const handleLogin = () => {
+        console.log("asass")
+        loginWithRedirect()
+    }
 
+    const handleLogout = () => {
+        logout();
+    };
+    
     return (
         <>
             <AppBar position="static" >
@@ -150,7 +162,7 @@ const NavBar = () => {
                                     href="/"
                                     key={ page.label }
                                     onClick={ handleCloseNavMenu }
-                                    sx={ { my: 2, color: 'white', display: 'block', m:2 } }
+                                    sx={ { my: 2, color: 'white', display: 'block', m: 2 } }
                                 >
                                     { page.label }
                                 </Link>
@@ -214,11 +226,29 @@ const NavBar = () => {
                                 )) }
                             </Menu>
                         </Box>
-                        <Tooltip title="Open settings" sx={ { ml: 2, justifyContent: "right", display: "flex" } }>
-                            <IconButton onClick={ handleOpenUserMenu } sx={ { p: 0, justifyContent: "right", display: "flex" } }>
-                                <Avatar alt="Remy Sharp" src="/Icon/Ichigo.jpeg" />
+
+                        { isAuthenticated ? ( 
+                            <Tooltip title="Open settings" sx={ { ml: 2, justifyContent: "right", display: "flex" } }>
+                                <IconButton onClick={ handleOpenUserMenu } sx={ { p: 0, justifyContent: "right", display: "flex" } }>
+                                    <Avatar alt="Remy Sharp" src={ user.picture } />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <IconButton
+                                aria-label="login"
+                                sx={ { mr: 2 } }
+                                onClick={ handleLogin }
+                            >
+                                <LoginIcon />
                             </IconButton>
-                        </Tooltip>
+                        ) }
+                        { isAuthenticated && ( 
+                            <Tooltip title="Logout" sx={ { ml: 4, justifyContent: "right", display: "flex" } }>
+                                <IconButton onClick={ handleLogout } sx={ { p: 0, justifyContent: "right", display: "flex", ml:2 } }>
+                                    <LogoutIcon />
+                                </IconButton>
+                            </Tooltip>
+                        ) }
                     </Toolbar>
                 </Container>
             </AppBar>

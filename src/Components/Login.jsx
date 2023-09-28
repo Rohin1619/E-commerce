@@ -1,4 +1,6 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -15,12 +17,8 @@ import Link from '@mui/material/Link';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
-import { useNavigate } from 'react-router-dom';
-
-import SignUp from './SignUp';
-
 const Login = () => {
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -38,6 +36,7 @@ const Login = () => {
             (storedUser) => storedUser.username === username && storedUser.password === password
         );
         if (user) {
+            setAuthenticated(true);
             navigate('/'); 
         } else {
             setSnackbarOpen(true);

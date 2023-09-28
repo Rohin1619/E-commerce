@@ -53,6 +53,8 @@ const Cart = ({ onCloseDialog }) => {
     setProductCounts(updatedCounts);
   }
 
+  const isCartEmpty = cartItems.length === 0;
+
   const handleClearCart = () => {
     dispatch(clearCart())
   }
@@ -125,14 +127,24 @@ const Cart = ({ onCloseDialog }) => {
             </Table>
           </TableContainer>
           <Box sx={ { display: "flex", justifyContent: "space-between", mt: 5 } }>
-            <Button
-              variant="contained"
-              onClick={ handleCheckout }
-              sx={ { borderRadius: 12 } }>Checkout</Button>
-            <Button
-              variant="contained"
-              onClick={ handleClearCart }
-              sx={ { borderRadius: 12, bgcolor: "red" } }>Clear Items</Button>
+            { !isCartEmpty && (
+              <Button
+                variant="contained"
+                onClick={ handleCheckout }
+                sx={ { borderRadius: 12 } }
+              >
+                Checkout
+              </Button>
+            ) }
+            { !isCartEmpty && (
+              <Button
+                variant="contained"
+                onClick={ handleClearCart }
+                sx={ { borderRadius: 12, bgcolor: "red" } }
+              >
+                Clear Items
+              </Button>
+            ) }
           </Box>
         </Box>
       </Container>
